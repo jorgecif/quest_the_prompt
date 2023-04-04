@@ -1,14 +1,39 @@
 import streamlit as st
 import PIL.Image
+import requests
+import random
 
 
+
+def consultar():
+
+    session = requests.Session()
+    with st.form("my_form"):
+        index = st.text_input("Palabra clave", key="index")
+
+        submitted = st.form_submit_button("Buscar")
+
+        if submitted:
+            st.write("Result")
+            data = fetch(session, f"https://lexica.art/api/v1/search?q={index}")
+
+            data2 = data["images"][numero]
+            st.json = data2
+            st.json
+            if data2:
+                st.image(data2['src'], caption=f"Author: {data2['prompt']}")
+            else:
+                st.error("Error")
 
 
 # Parámetros
-menu = ["Seleccione", "Opción 1", "Opción 2","Opción 3","Créditos"]
+
+numero_rand = random.randint(0, 49) # Para seleccionar aleatoreamente entre las 50 respuestas del json del servicio de Lexica
+
+menu = ["Seleccione", "Modo temática texto", "Modo temática imagen","Modo aleatorio","Créditos"]
 
 st.set_page_config(
-	page_title="Título de la aplicación",
+	page_title="Adivina el prompt",
 	page_icon="random",
 	layout="centered",
 	initial_sidebar_state="expanded",
@@ -25,34 +50,16 @@ st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
 
 #Funciones
-
-
-
-
-# ------------
-# Convertir a excel
-def to_excel(df):
-	output = BytesIO()
-	writer = pd.ExcelWriter(output, engine='xlsxwriter', options = {'remove_timezone': True})
-	df.to_excel(writer, sheet_name='Sheet1')
-	writer.save()
-	processed_data = output.getvalue()
-	return processed_data
-
-def get_table_download_link(df):
-	"""Generates a link allowing the data in a given panda dataframe to be downloaded
-	in:  dataframe
-	out: href string
-	"""
-	val = to_excel(df)
-	b64 = base64.b64encode(val).decode() # val looks like b'...'
-	href=f'<a href="data:application/octet-stream;base64,{b64}" download="captura.xlsx" target="_blank">Descargar: Haga clic derecho y guardar enlace como...</a>' # decode b'abc' => abc	
-	return href
-
+def fetch(session, url):
+    try:
+        result = session.get(url)
+        return result.json()
+    except Exception:
+        return {}
 
 
 def main():
-	st.title("Título de la aplicación")
+	st.title("Quest-the-prompt")
 
 	image =  PIL.Image.open('logo.png')
 
@@ -61,25 +68,46 @@ def main():
 
 	
 	if choice == "Seleccione":
-		st.subheader("Seleccione una de las opciones en el menú lateral")
+		st.subheader("Aplicación para entrenarse en el 'arte' de la redacción de prompts para la generación de imágenes con IA")
 
-	elif choice == "Opción 1":
-		st.subheader("Seleccionó la opción 1")
+	elif choice == "Modo temática texto":
+		st.subheader("Modo temática texto")
+		form = st.form("form1")
+		tematica_texto=form.text_input("Tema a buscar: ", key="tematica_texto")
+		texto_enviado = form.form_submit_button("Buscar")
+		
+		if texto_enviado:
+			session = requests.Session()
+			st.write("Resultado")
+			datos = fetch(session, f"https://lexica.art/api/v1/search?q={tematica_texto}")
+			datos_rand = datos["images"][numero_rand]
+			prompt_real=datos_rand['prompt']
+			URL_real=datos_rand['src']
+			#st.json = datos_rand
+			#st.json
+			if datos_rand:
+				#st.image(URL_real, caption=f"Prompt: {prompt_real}")
+				st.image(URL_real)
+			else:
+				st.error("Se ha producido un error. Espera 1 minuto para volver a intentar")
+			prompt_adivinado=form.text_input("Prompt adivinado: ", key="prompt_adivinado")
+			prompt_enviado = form.form_submit_button("Enviar")
+			if prompt_enviado:
+				st.write("Resultado")
+
+				#st.json = datos_rand
+				#st.json
 
 
 
-	elif choice == 'Opción 2':
-		st.subheader("Seleccionó la opción 2")
 
-		# ------ Input término principal
-		st.subheader("Término principal")
+	elif choice == 'Modo temática imagen':
+		st.subheader("Modo temática imagen")
 
-		# -----------------------------------
-	elif choice == 'Opción 3':
-		st.subheader("Seleccionó la opción 3")
 
-		# ------ Input coordenadas y radio
-		st.subheader("Localización")
+	elif choice == 'Modo aleatorio':
+		st.subheader("Modo aleatorio")
+
 
 
 
@@ -87,9 +115,9 @@ def main():
 		st.subheader("Jorge O. Cifuentes")
 		body='<a href="https://www.quidlab.co">https://www.quidlab.co</a>'
 		st.markdown(body, unsafe_allow_html=True)
-		st.write('Email: *jorge@quidlab.co* :heart:')
+		st.write('Email: *jorge@quidlab.co* :heart: :fleur_de_lis:')
+		st.write("Quest-the-prompt")
 		st.write("Version 1.0")
-		st.write("Nombre de la aplicación")
 		st.text("")
 
 if __name__ == "__main__":
