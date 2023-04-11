@@ -6,8 +6,12 @@ import spacy
 from streamlit_option_menu import option_menu
 from wonderwords import RandomWord
 from numerize.numerize import numerize
+from streamlit_extras.let_it_rain import rain
+
 
 r = RandomWord()
+
+
 
 
 
@@ -69,6 +73,17 @@ def fetch(session, url):
         return result.json()
     except Exception:
         return {}
+
+
+
+def success():
+	rain(
+		emoji="🎈",
+		font_size=54,
+		falling_speed=5,
+		animation_length=1, #'infinite'
+	)
+
 
 
 def consultar_imagen(tematica):
@@ -137,7 +152,7 @@ st.sidebar.image(image, width=None, use_column_width=None)
 with st.sidebar:
     selected = option_menu(
         menu_title="Selecciona",  # required
-        options=["Home", "Modo random", "Modo tema"],  # required
+        options=["Home", "Modo random", "Modo tema", "Modo tema"],  # required
         icons=["house", "caret-right-fill",
                         "caret-right-fill", "envelope"],  # optional
         menu_icon="upc-scan",  # optional
@@ -248,6 +263,7 @@ if selected == "Modo random":
 			diferencia = puntaje_actual - puntaje_guardado
 			
 			if puntaje_actual > puntaje_guardado:
+				success()
 				st.session_state.puntaje_guardado = puntaje_actual
 			col1, col2 = st.columns(2)
 			col1.metric(
