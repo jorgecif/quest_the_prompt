@@ -5,6 +5,7 @@ import random
 import spacy
 from streamlit_option_menu import option_menu
 from wonderwords import RandomWord
+from numerize.numerize import numerize
 
 r = RandomWord()
 
@@ -173,34 +174,30 @@ if selected == "Modo tema":
 		prompt_adivinado = st.text_input('Prompt: ', " ")
 		boton_adivinar = st.form_submit_button("Adivinar")
 
-
 		if boton_adivinar:
 			puntaje_actual = adivinar_prompt(prompt_adivinado, prompt_real)
 			st.session_state.puntaje_actual = puntaje_actual
 			puntaje_guardado = st.session_state.puntaje_guardado
 			diferencia = puntaje_actual - puntaje_guardado
 			
-
 			if puntaje_actual > puntaje_guardado:
 				st.session_state.puntaje_guardado = puntaje_actual
 			col1, col2 = st.columns(2)
 			col1.metric(
 				label="Puntaje más alto: ⏳",
-				value=(st.session_state.puntaje_guardado),
-				delta=diferencia,
+				value=(numerize(st.session_state.puntaje_guardado)),
+				delta=numerize(diferencia),
 			)
 			col2.metric(
 				label="Puntaje actual: ⏳",
-				value=(st.session_state.puntaje_actual),
-				delta=diferencia,
+				value=(numerize(st.session_state.puntaje_actual)),
+				delta=numerize(diferencia),
 			)
 			st.image(st.session_state.URL_consultado)
 			col1.write("**Prompt real**")
 			col1.write(st.session_state.prompt_consultado)
 			col2.write("**Prompt propuesto**")
 			col2.write(prompt_adivinado)
-
-
 
 
 if selected == "Modo random":
@@ -255,13 +252,13 @@ if selected == "Modo random":
 			col1, col2 = st.columns(2)
 			col1.metric(
 				label="Puntaje más alto: ⏳",
-				value=(st.session_state.puntaje_guardado),
-				delta=diferencia,
+				value=(numerize(st.session_state.puntaje_guardado)),
+				delta=numerize(diferencia),
 			)
 			col2.metric(
 				label="Puntaje actual: ⏳",
-				value=(st.session_state.puntaje_actual),
-				delta=diferencia,
+				value=(numerize(st.session_state.puntaje_actual)),
+				delta=numerize(diferencia),
 			)
 			st.image(st.session_state.URL_consultado)
 			col1.write("**Prompt real**")
