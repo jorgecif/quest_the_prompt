@@ -152,7 +152,7 @@ st.sidebar.image(image, width=None, use_column_width=None)
 with st.sidebar:
     selected = option_menu(
         menu_title="Selecciona",  # required
-        options=["Home", "Modo random", "Modo tema", "Modo tema"],  # required
+        options=["Home", "Modo random", "Modo tema", "Contacto"],  # required
         icons=["house", "caret-right-fill",
                         "caret-right-fill", "envelope"],  # optional
         menu_icon="upc-scan",  # optional
@@ -162,11 +162,21 @@ with st.sidebar:
 
 if selected == "Home":
 	st.title("Quest-the-prompt")
-	st.write("Esta aplicación te permitirá a modo de juego entrenarte en el arte de la redacción de prompts para la generación de imágenes por medio de IA.\n \n La aplicación se conecta con Lexica.art un repositorio de imágenes generadas con AI con sus respectivos prompts, permitiendo que aprendas de lo que otros usuarios generaron.\n\n\n\n")
+	st.write("Esta aplicación te permitirá a modo de juego entrenarte en el arte de la redacción de prompts para la generación de imágenes por medio de IA.\n \n La aplicación se conecta con [Lexica.art](https://Lexica.art) un repositorio de imágenes generadas con AI con sus respectivos prompts, permitiendo que aprendas de lo que otros usuarios generaron.\n\n\n\n")
 	st.write(' ')
 	st.write("**Instrucciones:** \n Selecciona en el menú de la izquierda un modo de juego para iniciar.")
-	st.markdown("* Modo random: Te propondrá una imagen aleatoria y te retará para que adivines el prompt.")
-	st.markdown("* Modo tema: Te permitirá buscar una imagen sobre un tema en particular y adivinar el prompt.")
+	"""
+	* Modo random: Te propondrá una imagen aleatoria y te retará para que adivines el prompt.
+		* Dale clic al botón 'Generar imagen para adivinar'. Se buscará una imagen en Lexica.art y se mostrará en pantalla.
+		* Escribe el prompt que creas corresponde a la imagen y has clic en el botón 'Adivinar'.
+		* Se mostrará tu resultado. Entre más cercano a 1, tu resultado será más cercano al prompt real.
+		* Haz clic nuevamente en Generar imagen para generar una nueva imagen y continúa entrenando. Se guardará siempre tu mejor puntaje. 
+	*  Modo tema: Te permitirá buscar una imagen sobre un tema en particular y adivinar el prompt.
+		* Escribe un tema como por ejemplo (Ciudad del futuro) y haz clic en el botón 'Generar imagen para adivinar'. Se buscará una imagen en Lexica.art y se mostrará en pantalla.
+		* Escribe el prompt que creas corresponde a la imagen y has clic en el botón 'Adivinar'.
+		* Se mostrará tu resultado. Entre más cercano a 1, tu resultado será más cercano al prompt real.
+		* Haz clic nuevamente en Generar imagen para generar una nueva imagen y continúa entrenando. Se guardará siempre tu mejor puntaje. 
+	"""
 
 
 if selected == "Modo tema":
@@ -196,6 +206,7 @@ if selected == "Modo tema":
 			diferencia = puntaje_actual - puntaje_guardado
 			
 			if puntaje_actual > puntaje_guardado:
+				success()
 				st.session_state.puntaje_guardado = puntaje_actual
 			col1, col2 = st.columns(2)
 			col1.metric(
