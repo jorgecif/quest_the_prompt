@@ -212,7 +212,7 @@ if selected == "Modo random":
 		counter = counter + 1
 		st.session_state.counter_modo_random=counter
 		#st.write(counter)
-		st.write(tematica)
+		#st.write(tematica)
 		numero_rand = random.randint(0, 49)
 		#st.write(numero_rand)
 		if counter == 1:
