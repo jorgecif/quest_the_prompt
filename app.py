@@ -6,6 +6,7 @@ import spacy
 from streamlit_option_menu import option_menu
 
 
+
 # Variables de sesión
 
 if 'puntaje_guardado' not in st.session_state:
