@@ -4,8 +4,10 @@ import requests
 import random
 import spacy
 from streamlit_option_menu import option_menu
-from random_word import RandomWords
-r = RandomWords()
+from wonderwords import RandomWord
+
+r = RandomWord()
+
 
 
 
@@ -27,7 +29,7 @@ if 'datos_guardados' not in st.session_state:
 if 'counter_modo_random' not in st.session_state:
     st.session_state.counter_modo_random = 0
 if 'tematica' not in st.session_state:
-    st.session_state.tematica =r.get_random_word()  
+    st.session_state.tematica =r.word() 
 
 	
 
@@ -205,16 +207,16 @@ if selected == "Modo random":
 	st.title(f"Adivina el prompt / {selected}")
 	boton_consultado = st.button(label="Generar imagen para adivinar")
 	counter=st.session_state.counter_modo_random
-	#tematica=st.session_state.tematica
+	tematica=st.session_state.tematica
 	if boton_consultado:
 		counter = counter + 1
 		st.session_state.counter_modo_random=counter
 		#st.write(counter)
-		#st.write(tematica)
+		st.write(tematica)
 		numero_rand = random.randint(0, 49)
 		#st.write(numero_rand)
 		if counter == 1:
-			st.session_state.tematica =r.get_random_word()
+			st.session_state.tematica =r.word()
 			tematica=st.session_state.tematica
 			resultado = consultar_imagen_modo_random(tematica,counter, numero_rand)
 			URL_resultado = resultado[0]
