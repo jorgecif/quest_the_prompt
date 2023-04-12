@@ -265,7 +265,7 @@ if selected == "Modo random":
 	with st.form(key='form_adivinar'):
 		prompt_real = st.session_state.prompt_consultado
 		prompt_adivinado = st.text_input('Prompt: ', " ")
-		boton_adivinar = st.form_submit_button("Adivinar", on_click=adivinar_prompt, args=[prompt_adivinado, prompt_real])
+		boton_adivinar = st.form_submit_button("Adivinar")
 
 		if boton_adivinar:
 			puntaje_actual = adivinar_prompt(prompt_adivinado, prompt_real)
